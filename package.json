@@ -1,0 +1,34 @@
+{
+  "name": "linkedin-ads-cli",
+  "version": "0.1.0",
+  "description": "LinkedIn Ads CLI for AI agents",
+  "type": "module",
+  "bin": {
+    "linkedin-ads-cli": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "pnpm build"
+  },
+  "author": "Benn Huang <tohuangbin@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bin-Huang/linkedin-ads-cli.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "linkedin-ads",
+    "ads",
+    "cli",
+    "ai-agent",
+    "api"
+  ]
+}
