@@ -250,6 +250,65 @@ Options:
 
 Default metrics: impressions, clicks, costInLocalCurrency, costInUsd, externalWebsiteConversions, likes, comments, shares, follows, videoViews
 
+### lead-gen-forms
+
+List Lead Gen forms for an ad account.
+
+```bash
+linkedin-ads-cli lead-gen-forms 123456789
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### lead-form-responses
+
+List responses (submissions) for a Lead Gen form.
+
+```bash
+linkedin-ads-cli lead-form-responses 777888999
+linkedin-ads-cli lead-form-responses 777888999 --start-time 1709251200000 --end-time 1711929600000
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+- `--start-time <time>` -- filter responses after this time (epoch ms)
+- `--end-time <time>` -- filter responses before this time (epoch ms)
+
+### audience-counts
+
+Get estimated audience size for targeting criteria.
+
+```bash
+linkedin-ads-cli audience-counts 123456789
+```
+
+### budget-recommendations
+
+Get budget recommendations for a campaign.
+
+```bash
+linkedin-ads-cli budget-recommendations 111222333
+```
+
+### ad-forecasts
+
+Get ad delivery forecasts for an account.
+
+```bash
+linkedin-ads-cli ad-forecasts 123456789
+```
+
+### targeting-facets
+
+List available targeting facets for an ad account (industries, job titles, locations, etc.).
+
+```bash
+linkedin-ads-cli targeting-facets 123456789
+```
+
 ## Error output
 
 All errors are JSON to stderr:
