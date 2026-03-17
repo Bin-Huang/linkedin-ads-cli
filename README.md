@@ -322,7 +322,7 @@ All errors are JSON to stderr:
 ## API Reference
 
 - [LinkedIn Marketing API Overview](https://learn.microsoft.com/en-us/linkedin/marketing/)
-- [Ad Accounts API](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-an-account)
+- [Ad Accounts API](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-accounts)
 - [Analytics API](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/ads-reporting)
 
 ## Related
