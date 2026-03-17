@@ -30,10 +30,10 @@ export function registerForecastCommands(program: Command): void {
         const creds = loadCredentials(program.opts().credentials);
         const campaign = campaignId.startsWith("urn:") ? campaignId : `urn:li:sponsoredCampaign:${campaignId}`;
         const params: Record<string, string> = {
-          q: "campaign",
+          q: "criteriaV2",
           campaign,
         };
-        const data = await callApi({ creds, path: "adBudgetRecommendations", params });
+        const data = await callApi({ creds, path: "adBudgetPricing", params });
         output(data, program.opts().format);
       } catch (err) {
         fatal((err as Error).message);
@@ -48,10 +48,10 @@ export function registerForecastCommands(program: Command): void {
         const creds = loadCredentials(program.opts().credentials);
         const account = accountId.startsWith("urn:") ? accountId : `urn:li:sponsoredAccount:${accountId}`;
         const params: Record<string, string> = {
-          q: "account",
+          q: "criteriaV2",
           account,
         };
-        const data = await callApi({ creds, path: "adForecasts", params });
+        const data = await callApi({ creds, path: "adSupplyForecasts", params });
         output(data, program.opts().format);
       } catch (err) {
         fatal((err as Error).message);
@@ -59,17 +59,12 @@ export function registerForecastCommands(program: Command): void {
     });
 
   program
-    .command("targeting-facets <account-id>")
-    .description("List available targeting facets for an ad account")
-    .action(async (accountId: string) => {
+    .command("targeting-facets")
+    .description("List available targeting facets")
+    .action(async () => {
       try {
         const creds = loadCredentials(program.opts().credentials);
-        const account = accountId.startsWith("urn:") ? accountId : `urn:li:sponsoredAccount:${accountId}`;
-        const params: Record<string, string> = {
-          q: "account",
-          account,
-        };
-        const data = await callApi({ creds, path: "adTargetingFacets", params });
+        const data = await callApi({ creds, path: "adTargetingFacets" });
         output(data, program.opts().format);
       } catch (err) {
         fatal((err as Error).message);

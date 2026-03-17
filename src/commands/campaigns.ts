@@ -7,8 +7,8 @@ export function registerCampaignCommands(program: Command): void {
   program
     .command("campaign-groups <account-id>")
     .description("List campaign groups for an ad account")
-    .option("--count <n>", "Number of results (default 100)", "100")
-    .option("--start <n>", "Start index (default 0)", "0")
+    .option("--page-size <n>", "Page size (default 100)", "100")
+    .option("--page-token <token>", "Page token for pagination")
     .action(async (accountId: string, opts) => {
       try {
         const creds = loadCredentials(program.opts().credentials);
@@ -16,9 +16,9 @@ export function registerCampaignCommands(program: Command): void {
         const params: Record<string, string> = {
           q: "search",
           "search.account.values[0]": account,
-          count: opts.count,
-          start: opts.start,
+          pageSize: opts.pageSize,
         };
+        if (opts.pageToken) params.pageToken = opts.pageToken;
         const data = await callApi({ creds, path: "adCampaignGroups", params });
         output(data, program.opts().format);
       } catch (err) {
@@ -43,8 +43,8 @@ export function registerCampaignCommands(program: Command): void {
   program
     .command("campaigns <account-id>")
     .description("List campaigns for an ad account")
-    .option("--count <n>", "Number of results (default 100)", "100")
-    .option("--start <n>", "Start index (default 0)", "0")
+    .option("--page-size <n>", "Page size (default 100)", "100")
+    .option("--page-token <token>", "Page token for pagination")
     .option("--status <status>", "Filter by status: ACTIVE, PAUSED, ARCHIVED, COMPLETED, CANCELED, DRAFT")
     .option("--campaign-group <id>", "Filter by campaign group ID")
     .action(async (accountId: string, opts) => {
@@ -54,9 +54,9 @@ export function registerCampaignCommands(program: Command): void {
         const params: Record<string, string> = {
           q: "search",
           "search.account.values[0]": account,
-          count: opts.count,
-          start: opts.start,
+          pageSize: opts.pageSize,
         };
+        if (opts.pageToken) params.pageToken = opts.pageToken;
         if (opts.status) params["search.status.values[0]"] = opts.status;
         if (opts.campaignGroup) {
           const cg = opts.campaignGroup.startsWith("urn:") ? opts.campaignGroup : `urn:li:sponsoredCampaignGroup:${opts.campaignGroup}`;

@@ -14,8 +14,8 @@ export function registerLeadCommands(program: Command): void {
         const creds = loadCredentials(program.opts().credentials);
         const account = accountId.startsWith("urn:") ? accountId : `urn:li:sponsoredAccount:${accountId}`;
         const params: Record<string, string> = {
-          q: "account",
-          account,
+          q: "owner",
+          owner: account,
           count: opts.count,
           start: opts.start,
         };
@@ -27,22 +27,27 @@ export function registerLeadCommands(program: Command): void {
     });
 
   program
-    .command("lead-form-responses <form-id>")
+    .command("lead-form-responses <account-id>")
     .description("List responses (submissions) for a Lead Gen form")
     .option("--count <n>", "Number of results (default 100)", "100")
     .option("--start <n>", "Start index (default 0)", "0")
+    .option("--form <form-id>", "Filter by form ID")
     .option("--start-time <time>", "Filter responses after this time (epoch ms)")
     .option("--end-time <time>", "Filter responses before this time (epoch ms)")
-    .action(async (formId: string, opts) => {
+    .action(async (accountId: string, opts) => {
       try {
         const creds = loadCredentials(program.opts().credentials);
-        const form = formId.startsWith("urn:") ? formId : `urn:li:leadForm:${formId}`;
+        const owner = accountId.startsWith("urn:") ? accountId : `urn:li:sponsoredAccount:${accountId}`;
         const params: Record<string, string> = {
-          q: "form",
-          form,
+          q: "owner",
+          owner,
           count: opts.count,
           start: opts.start,
         };
+        if (opts.form) {
+          const form = opts.form.startsWith("urn:") ? opts.form : `urn:li:leadForm:${opts.form}`;
+          params.form = form;
+        }
         if (opts.startTime) params.submittedAtStart = opts.startTime;
         if (opts.endTime) params.submittedAtEnd = opts.endTime;
         const data = await callApi({ creds, path: "leadFormResponses", params });
