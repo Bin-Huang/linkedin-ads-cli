@@ -1,6 +1,8 @@
 # linkedin-ads-cli
 
-LinkedIn Ads CLI for AI agents. Read-only access to LinkedIn Marketing API for campaign management and analytics.
+LinkedIn Ads CLI for AI agents (and humans). Pull campaign analytics with pivot breakdowns, forecast ad delivery and budgets, explore targeting facets, retrieve lead form responses, and more.
+
+**Works with:** OpenClaw, Claude Code, Cursor, Codex, and any agent that can run shell commands.
 
 ## Installation
 
@@ -8,12 +10,26 @@ LinkedIn Ads CLI for AI agents. Read-only access to LinkedIn Marketing API for c
 npm install -g linkedin-ads-cli
 ```
 
+Or run directly with npx:
+
+```bash
+npx linkedin-ads-cli --help
+```
+
 ## How it works
 
-- All output is JSON to stdout (machine-readable)
-- Errors go to stderr as `{"error": "..."}`
-- Exit code 0 = success, non-zero = failure
-- Supports OAuth2 Bearer token authentication
+Built on the official [LinkedIn Marketing API](https://learn.microsoft.com/en-us/linkedin/marketing/), this CLI authenticates via an OAuth2 Bearer token (set as an environment variable, credentials file, or per-command flag) and provides read-only access to LinkedIn's advertising platform.
+
+Core endpoints covered:
+
+- **Organizations & accounts** -- authenticated user profile, organizations, ad accounts, and account users
+- **Campaign groups & campaigns** -- browse the campaign hierarchy with status filtering
+- **Creatives** -- list and inspect ad creatives with campaign filtering
+- **Analytics & reporting** -- pull performance metrics with date ranges, granularity (daily/monthly), and pivot dimensions
+- **Audiences & targeting** -- matched audiences, audience counts, and available targeting facets
+- **Conversions & tracking** -- conversion rules and Insight Tags
+- **Lead gen** -- lead gen forms and form responses with time-range filtering
+- **Forecasting** -- budget recommendations and ad delivery forecasts
 
 ## Setup
 
