@@ -1,19 +1,276 @@
 # linkedin-ads-cli
 
-A LinkedIn Ads CLI designed for AI agents. Wraps the official LinkedIn Ads API with simple, agent-friendly commands.
+LinkedIn Ads CLI for AI agents. Read-only access to LinkedIn Marketing API for campaign management and analytics.
 
-**Works with:** OpenClaw, Claude Code, Cursor, Codex, and any agent that can run shell commands.
+## Installation
 
-> **Status: Under Development** — This project is not yet functional. Star/watch for updates.
+```bash
+npm install -g linkedin-ads-cli
+```
+
+## How it works
+
+- All output is JSON to stdout (machine-readable)
+- Errors go to stderr as `{"error": "..."}`
+- Exit code 0 = success, non-zero = failure
+- Supports OAuth2 Bearer token authentication
+
+## Setup
+
+### Option 1: Environment variable
+
+```bash
+export LINKEDIN_ADS_ACCESS_TOKEN="your_access_token"
+```
+
+### Option 2: Credentials file
+
+Create `~/.config/linkedin-ads-cli/credentials.json`:
+
+```json
+{
+  "access_token": "your_access_token"
+}
+```
+
+### Option 3: Per-command credentials
+
+```bash
+linkedin-ads-cli accounts --credentials /path/to/creds.json
+```
+
+### Getting an access token
+
+LinkedIn requires OAuth2 authentication. You need a [LinkedIn Developer Application](https://www.linkedin.com/developers/) with Marketing API access. Use the OAuth2 flow to get an access token with the required scopes:
+- `r_ads` - Read ad accounts
+- `r_ads_reporting` - Read ad analytics
+- `r_organization_social` - Read organization data
+
+## Entity hierarchy
+
+LinkedIn Ads uses this hierarchy:
+
+```
+Organization (Company Page)
+ └── Ad Account
+      └── Campaign Group
+           └── Campaign
+                └── Creative
+```
+
+Most list commands require the parent entity ID. Start with `me` to get your profile, then `organization-acls` to find organizations you manage, then `accounts` to find ad accounts.
+
+## Usage
+
+All commands output pretty-printed JSON by default. Use `--format compact` for single-line JSON.
+
+LinkedIn uses URN format for IDs (e.g., `urn:li:sponsoredAccount:123456`). This CLI accepts both full URNs and plain numeric IDs.
+
+### me
+
+Get the authenticated user profile.
+
+```bash
+linkedin-ads-cli me
+```
+
+### organization
+
+Get an organization (company page) by ID.
+
+```bash
+linkedin-ads-cli organization 12345678
+```
+
+### organization-acls
+
+List organizations the authenticated user administers.
+
+```bash
+linkedin-ads-cli organization-acls
+linkedin-ads-cli organization-acls --role ADMINISTRATOR
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+- `--role <role>` -- filter by role: ADMINISTRATOR, DIRECT_SPONSORED_CONTENT_POSTER, etc.
+
+### accounts
+
+List ad accounts the authenticated user has access to.
+
+```bash
+linkedin-ads-cli accounts
+linkedin-ads-cli accounts --search "My Company"
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+- `--search <query>` -- search by account name or ID
+
+### account
+
+Get a specific ad account.
+
+```bash
+linkedin-ads-cli account 123456789
+linkedin-ads-cli account urn:li:sponsoredAccount:123456789
+```
+
+### account-users
+
+List users with access to an ad account.
+
+```bash
+linkedin-ads-cli account-users 123456789
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### campaign-groups
+
+List campaign groups for an ad account.
+
+```bash
+linkedin-ads-cli campaign-groups 123456789
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### campaign-group
+
+Get a specific campaign group.
+
+```bash
+linkedin-ads-cli campaign-group 987654321
+```
+
+### campaigns
+
+List campaigns for an ad account.
+
+```bash
+linkedin-ads-cli campaigns 123456789
+linkedin-ads-cli campaigns 123456789 --status ACTIVE
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+- `--status <status>` -- filter by status: ACTIVE, PAUSED, ARCHIVED, COMPLETED, CANCELED, DRAFT
+- `--campaign-group <id>` -- filter by campaign group ID
+
+### campaign
+
+Get a specific campaign.
+
+```bash
+linkedin-ads-cli campaign 111222333
+```
+
+### creatives
+
+List creatives for a campaign.
+
+```bash
+linkedin-ads-cli creatives 111222333
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### creative
+
+Get a specific creative.
+
+```bash
+linkedin-ads-cli creative 444555666
+```
+
+### audiences
+
+List matched audiences (DMP segments) for an ad account.
+
+```bash
+linkedin-ads-cli audiences 123456789
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### conversion-rules
+
+List conversion rules for an ad account.
+
+```bash
+linkedin-ads-cli conversion-rules 123456789
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### insight-tags
+
+List LinkedIn Insight Tags for an ad account.
+
+```bash
+linkedin-ads-cli insight-tags 123456789
+```
+
+Options:
+- `--count <n>` -- results per page (default 100)
+- `--start <n>` -- start index (default 0)
+
+### analytics
+
+Get ad analytics for an account.
+
+```bash
+linkedin-ads-cli analytics 123456789 --start-date 2026-01-01 --end-date 2026-01-31
+linkedin-ads-cli analytics 123456789 --start-date 2026-01-01 --end-date 2026-01-31 --granularity DAILY --pivot CAMPAIGN
+```
+
+Options:
+- `--start-date <date>` -- start date (YYYY-MM-DD) **required**
+- `--end-date <date>` -- end date (YYYY-MM-DD) **required**
+- `--granularity <gran>` -- time granularity: DAILY, MONTHLY, ALL (default DAILY)
+- `--pivot <pivot>` -- pivot dimension: CAMPAIGN, CAMPAIGN_GROUP, CREATIVE, ACCOUNT (default CAMPAIGN)
+- `--campaign-ids <ids>` -- filter by campaign IDs (comma-separated)
+- `--campaign-group-ids <ids>` -- filter by campaign group IDs (comma-separated)
+- `--fields <fields>` -- metric fields (comma-separated)
+
+Default metrics: impressions, clicks, costInLocalCurrency, costInUsd, externalWebsiteConversions, likes, comments, shares, follows, videoViews
+
+## Error output
+
+All errors are JSON to stderr:
+
+```json
+{"error": "No credentials found. Set LINKEDIN_ADS_ACCESS_TOKEN env var..."}
+```
 
 ## API Reference
 
-- Official docs: https://learn.microsoft.com/en-us/linkedin/marketing/
+- [LinkedIn Marketing API Overview](https://learn.microsoft.com/en-us/linkedin/marketing/)
+- [Ad Accounts API](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/account-structure/create-and-manage-an-account)
+- [Analytics API](https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/ads-reporting)
 
 ## Related
 
-- [google-analytics-cli](https://github.com/Bin-Huang/google-analytics-cli) — Google Analytics CLI for AI agents
-- [google-search-console-cli](https://github.com/Bin-Huang/google-search-console-cli) — Google Search Console CLI for AI agents
+- [tiktok-ads-cli](https://github.com/Bin-Huang/tiktok-ads-cli) -- TikTok Ads CLI
+- [x-ads-cli](https://github.com/Bin-Huang/x-ads-cli) -- X (Twitter) Ads CLI
+- [snapchat-ads-cli](https://github.com/Bin-Huang/snapchat-ads-cli) -- Snapchat Ads CLI
+- [pinterest-ads-cli](https://github.com/Bin-Huang/pinterest-ads-cli) -- Pinterest Ads CLI
+- [reddit-ads-cli](https://github.com/Bin-Huang/reddit-ads-cli) -- Reddit Ads CLI
 
 ## License
 
