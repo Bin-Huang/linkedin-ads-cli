@@ -106,8 +106,8 @@ linkedin-ads-cli accounts --search "My Company"
 ```
 
 Options:
-- `--count <n>` -- results per page (default 100)
-- `--start <n>` -- start index (default 0)
+- `--page-size <n>` -- results per page (default 100)
+- `--page-token <token>` -- page token for pagination
 - `--search <query>` -- search by account name or ID
 
 ### account
@@ -140,8 +140,8 @@ linkedin-ads-cli campaign-groups 123456789
 ```
 
 Options:
-- `--count <n>` -- results per page (default 100)
-- `--start <n>` -- start index (default 0)
+- `--page-size <n>` -- results per page (default 100)
+- `--page-token <token>` -- page token for pagination
 
 ### campaign-group
 
@@ -161,8 +161,8 @@ linkedin-ads-cli campaigns 123456789 --status ACTIVE
 ```
 
 Options:
-- `--count <n>` -- results per page (default 100)
-- `--start <n>` -- start index (default 0)
+- `--page-size <n>` -- results per page (default 100)
+- `--page-token <token>` -- page token for pagination
 - `--status <status>` -- filter by status: ACTIVE, PAUSED, ARCHIVED, COMPLETED, CANCELED, DRAFT
 - `--campaign-group <id>` -- filter by campaign group ID
 
@@ -176,15 +176,16 @@ linkedin-ads-cli campaign 111222333
 
 ### creatives
 
-List creatives for a campaign.
+List creatives for an ad account.
 
 ```bash
 linkedin-ads-cli creatives 111222333
 ```
 
 Options:
-- `--count <n>` -- results per page (default 100)
-- `--start <n>` -- start index (default 0)
+- `--page-size <n>` -- results per page (default 100)
+- `--page-token <token>` -- page token for pagination
+- `--campaign <campaign-id>` -- filter by campaign ID
 
 ### creative
 
@@ -274,6 +275,7 @@ linkedin-ads-cli lead-form-responses 777888999 --start-time 1709251200000 --end-
 Options:
 - `--count <n>` -- results per page (default 100)
 - `--start <n>` -- start index (default 0)
+- `--form <form-id>` -- filter by form ID
 - `--start-time <time>` -- filter responses after this time (epoch ms)
 - `--end-time <time>` -- filter responses before this time (epoch ms)
 
@@ -303,10 +305,10 @@ linkedin-ads-cli ad-forecasts 123456789
 
 ### targeting-facets
 
-List available targeting facets for an ad account (industries, job titles, locations, etc.).
+List available targeting facets (industries, job titles, locations, etc.).
 
 ```bash
-linkedin-ads-cli targeting-facets 123456789
+linkedin-ads-cli targeting-facets
 ```
 
 ## Error output
