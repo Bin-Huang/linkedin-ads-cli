@@ -10,11 +10,7 @@ LinkedIn Ads CLI for AI agents (and humans). Pull campaign analytics with pivot 
 npm install -g linkedin-ads-cli
 ```
 
-Or run directly with npx:
-
-```bash
-npx linkedin-ads-cli --help
-```
+Or run directly: `npx linkedin-ads-cli --help`
 
 ## How it works
 
