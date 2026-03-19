@@ -277,11 +277,12 @@ Options:
 
 ### lead-form-responses
 
-List responses (submissions) for a Lead Gen form.
+List lead form responses (submissions) for an ad account.
 
 ```bash
-linkedin-ads-cli lead-form-responses 777888999
-linkedin-ads-cli lead-form-responses 777888999 --start-time 1709251200000 --end-time 1711929600000
+linkedin-ads-cli lead-form-responses 123456789
+linkedin-ads-cli lead-form-responses 123456789 --form 777888999
+linkedin-ads-cli lead-form-responses 123456789 --start-time 1709251200000 --end-time 1711929600000
 ```
 
 Options:
