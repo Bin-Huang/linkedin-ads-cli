@@ -1,6 +1,6 @@
 {
   "name": "linkedin-ads-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "LinkedIn Ads CLI for AI agents",
   "type": "module",
   "bin": {
