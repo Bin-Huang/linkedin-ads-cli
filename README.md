@@ -8,7 +8,7 @@ LinkedIn Ads CLI for AI agents (and humans). Pull campaign analytics with pivot 
 
 Tell your AI agent (e.g. OpenClaw):
 
-> Install the CLI and skills from https://github.com/Bin-Huang/linkedin-ads-cli
+> Install this CLI and skills from https://github.com/Bin-Huang/linkedin-ads-cli
 
 Or install manually:
 
