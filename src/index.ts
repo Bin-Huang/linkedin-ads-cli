@@ -17,7 +17,7 @@ const program = new Command();
 
 program
   .name("linkedin-ads-cli")
-  .description("LinkedIn Ads CLI for AI agents")
+  .description("LinkedIn Ads CLI & Skills for AI agents")
   .version(version)
   .option("--format <format>", "Output format", "json")
   .option("--credentials <path>", "Path to credentials JSON file")

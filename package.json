@@ -1,7 +1,7 @@
 {
   "name": "linkedin-ads-cli",
   "version": "1.0.4",
-  "description": "LinkedIn Ads CLI for AI agents",
+  "description": "LinkedIn Ads CLI & Skills for AI agents",
   "type": "module",
   "bin": {
     "linkedin-ads-cli": "dist/index.js"
